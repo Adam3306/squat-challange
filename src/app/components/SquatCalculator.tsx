@@ -3,33 +3,53 @@
 import { useState } from "react";
 
 export default function SquatCalculator() {
-  const [weight, setWeight] = useState<number>(0);
-  const [reps, setReps] = useState<number>(0);
+  const [weightInput, setWeightInput] = useState<string>("");
+  const [repsInput, setRepsInput] = useState<string>("");
+  const [calculatedWeight, setCalculatedWeight] = useState<number>(0);
+  const [calculatedReps, setCalculatedReps] = useState<number>(0);
   const [totalWeight, setTotalWeight] = useState<number>(0);
   const [targetTotal] = useState<number>(6437.5); // kg per session
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value) || 0;
-    setWeight(value);
-    if (value > 0) {
-      const calculatedReps = Math.ceil(targetTotal / value);
-      setReps(calculatedReps);
-      setTotalWeight(calculatedReps * value);
+    const value = e.target.value;
+    setWeightInput(value);
+
+    const weight = parseFloat(value) || 0;
+
+    if (weight > 0) {
+      // Auto-complete reps to reach target
+      const calculatedReps = Math.ceil(targetTotal / weight);
+      setRepsInput(calculatedReps.toString());
+      setCalculatedWeight(weight);
+      setCalculatedReps(calculatedReps);
+      setTotalWeight(calculatedReps * weight);
     } else {
-      setReps(0);
+      // Reset everything if weight is 0 or empty
+      setRepsInput("");
+      setCalculatedWeight(0);
+      setCalculatedReps(0);
       setTotalWeight(0);
     }
   };
 
   const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value) || 0;
-    setReps(value);
-    if (value > 0) {
-      const calculatedWeight = Math.ceil(targetTotal / value);
-      setWeight(calculatedWeight);
-      setTotalWeight(value * calculatedWeight);
+    const value = e.target.value;
+    setRepsInput(value);
+
+    const reps = parseInt(value) || 0;
+
+    if (reps > 0) {
+      // Auto-complete weight to reach target
+      const calculatedWeight = Math.ceil(targetTotal / reps);
+      setWeightInput(calculatedWeight.toString());
+      setCalculatedWeight(calculatedWeight);
+      setCalculatedReps(reps);
+      setTotalWeight(reps * calculatedWeight);
     } else {
-      setWeight(0);
+      // Reset everything if reps is 0 or empty
+      setWeightInput("");
+      setCalculatedWeight(0);
+      setCalculatedReps(0);
       setTotalWeight(0);
     }
   };
@@ -60,7 +80,7 @@ export default function SquatCalculator() {
           <input
             type="number"
             id="weight"
-            value={weight || ""}
+            value={weightInput}
             onChange={handleWeightChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white text-gray-900 placeholder-gray-500"
             placeholder="Enter weight..."
@@ -79,7 +99,7 @@ export default function SquatCalculator() {
           <input
             type="number"
             id="reps"
-            value={reps || ""}
+            value={repsInput}
             onChange={handleRepsChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg bg-white text-gray-900 placeholder-gray-500"
             placeholder="Enter reps..."
@@ -91,11 +111,15 @@ export default function SquatCalculator() {
       <div className="mt-6 p-4 bg-gray-50 rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
           <div>
-            <div className="text-2xl font-bold text-blue-600">{reps}</div>
+            <div className="text-2xl font-bold text-blue-600">
+              {calculatedReps}
+            </div>
             <div className="text-sm text-gray-600">Reps</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-green-600">{weight} kg</div>
+            <div className="text-2xl font-bold text-green-600">
+              {calculatedWeight} kg
+            </div>
             <div className="text-sm text-gray-600">Per Rep</div>
           </div>
           <div>
@@ -138,8 +162,8 @@ export default function SquatCalculator() {
 
       <div className="mt-6 text-center">
         <p className="text-sm text-gray-500">
-          💡 Tip: Enter either weight or reps, and the calculator will suggest
-          the other value
+          💡 Tip: Enter either weight or reps, and the calculator will
+          auto-complete the other to reach the target!
         </p>
       </div>
     </div>
