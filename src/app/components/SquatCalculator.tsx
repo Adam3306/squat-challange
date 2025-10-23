@@ -6,7 +6,7 @@ export default function SquatCalculator() {
   const [weight, setWeight] = useState<number>(0);
   const [reps, setReps] = useState<number>(0);
   const [totalWeight, setTotalWeight] = useState<number>(0);
-  const [targetTotal] = useState<number>(6375); // kg per session
+  const [targetTotal] = useState<number>(6437.5); // kg per session
 
   const calculateReps = () => {
     if (weight > 0) {

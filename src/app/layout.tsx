@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "48-Hour Squat Challenge",
   description:
-    "Track your 48-hour squat challenge with countdown timer and calculator. Target: 6,375 kg per session every 4 hours.",
+    "Track your 48-hour squat challenge with countdown timer and calculator. Target: 6,437.5 kg per session every 4 hours.",
 };
 
 export default function RootLayout({

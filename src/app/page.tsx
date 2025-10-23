@@ -1,6 +1,7 @@
 import CountdownTimer from "./components/CountdownTimer";
 import SquatCalculator from "./components/SquatCalculator";
 import WorkoutTracker from "./components/WorkoutTracker";
+import MotivationQuote from "./components/MotivationQuote";
 
 export default function Home() {
   // Challenge starts on October 24th at 12:00 CET (Hungary timezone)
@@ -20,7 +21,7 @@ export default function Home() {
             Challenge starts: October 24th, 12:00 CET (Hungary)
           </p>
           <p className="text-lg text-gray-500 mb-4">
-            Target: 6,375 kg per workout session (every 4 hours)
+            Target: 6,437.5 kg per workout session (every 4 hours)
           </p>
           <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg p-4 max-w-md mx-auto">
             <p className="text-lg font-semibold text-gray-700">
@@ -38,6 +39,11 @@ export default function Home() {
             challengeStartDate={challengeStartDate}
             challengeEndDate={challengeEndDate}
           />
+        </div>
+
+        {/* Motivation Quote */}
+        <div className="mb-8">
+          <MotivationQuote />
         </div>
 
         {/* Squat Calculator */}
@@ -70,9 +76,9 @@ export default function Home() {
                 🏋️ Requirements
               </h4>
               <ul className="text-gray-600 space-y-1">
-                <li>• 6,375 kg total per session</li>
+                <li>• 6,437.5 kg total per session</li>
                 <li>• Any squat variation allowed</li>
-                <li>• Weight × Reps = 6,375 kg</li>
+                <li>• Weight × Reps = 6,437.5 kg</li>
                 <li>• Track your progress!</li>
               </ul>
             </div>
