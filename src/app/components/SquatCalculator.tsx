@@ -8,28 +8,6 @@ export default function SquatCalculator() {
   const [totalWeight, setTotalWeight] = useState<number>(0);
   const [targetTotal] = useState<number>(6437.5); // kg per session
 
-  const calculateReps = () => {
-    if (weight > 0) {
-      const calculatedReps = Math.ceil(targetTotal / weight);
-      setReps(calculatedReps);
-      setTotalWeight(calculatedReps * weight);
-    } else {
-      setReps(0);
-      setTotalWeight(0);
-    }
-  };
-
-  const calculateWeight = () => {
-    if (reps > 0) {
-      const calculatedWeight = Math.ceil(targetTotal / reps);
-      setWeight(calculatedWeight);
-      setTotalWeight(reps * calculatedWeight);
-    } else {
-      setWeight(0);
-      setTotalWeight(0);
-    }
-  };
-
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value) || 0;
     setWeight(value);
@@ -139,7 +117,7 @@ export default function SquatCalculator() {
               </div>
               {remainingWeight > 0 && (
                 <p className="mt-1 text-sm">
-                  You'll lift {remainingWeight.toLocaleString()} kg extra! 💪
+                  You`ll lift {remainingWeight.toLocaleString()} kg extra! 💪
                 </p>
               )}
             </div>
