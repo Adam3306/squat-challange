@@ -20,7 +20,7 @@ export default function WorkoutTracker() {
 
   // Initialize sessions for 48-hour challenge (12 sessions every 4 hours)
   useEffect(() => {
-    const challengeStart = new Date("2025-10-24T12:00:00+01:00"); // October 24th, 12:00 CET
+    const challengeStart = new Date("2025-10-24T12:00:00"); // October 24th, 12:00 CET
     const now = new Date();
 
     // Try to load saved sessions from localStorage

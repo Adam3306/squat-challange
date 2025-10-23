@@ -5,8 +5,8 @@ import WorkoutTracker from "./components/WorkoutTracker";
 export default function Home() {
   // Challenge starts on October 24th at 12:00 CET (Hungary timezone)
   // Set to 2025 since we're currently in 2025
-  const challengeStartDate = new Date("2025-10-24T12:00:00+01:00"); // October 24th, 12:00 CET
-  const challengeEndDate = new Date("2025-10-26T11:00:00+01:00"); // October 26th, 11:00 CET
+  const challengeStartDate = new Date("2025-10-24T12:00:00"); // October 24th, 12:00 CET
+  const challengeEndDate = new Date("2025-10-26T11:00:00"); // October 26th, 11:00 CET
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
