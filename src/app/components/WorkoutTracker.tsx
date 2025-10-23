@@ -23,20 +23,42 @@ export default function WorkoutTracker() {
     const challengeStart = new Date("2025-10-24T12:00:00+01:00"); // October 24th, 12:00 CET
     const now = new Date();
 
-    const initialSessions: WorkoutSession[] = [];
+    // Try to load saved sessions from localStorage
+    const savedSessions = localStorage.getItem("squat-challenge-sessions");
 
-    for (let i = 0; i < 12; i++) {
-      const sessionTime = new Date(
-        challengeStart.getTime() + i * 4 * 60 * 60 * 1000
-      );
-      initialSessions.push({
-        id: i + 1,
-        timestamp: sessionTime,
-        weight: 0,
-        reps: 0,
-        totalWeight: 0,
-        completed: false,
-      });
+    let initialSessions: WorkoutSession[] = [];
+
+    if (savedSessions) {
+      try {
+        const parsedSessions = JSON.parse(savedSessions);
+        // Validate that we have the right number of sessions
+        if (Array.isArray(parsedSessions) && parsedSessions.length === 12) {
+          // Convert timestamp strings back to Date objects
+          initialSessions = parsedSessions.map((session) => ({
+            ...session,
+            timestamp: new Date(session.timestamp),
+          }));
+        }
+      } catch (error) {
+        console.error("Error parsing saved sessions:", error);
+      }
+    }
+
+    // If no saved sessions or invalid data, create default sessions
+    if (initialSessions.length === 0) {
+      for (let i = 0; i < 12; i++) {
+        const sessionTime = new Date(
+          challengeStart.getTime() + i * 4 * 60 * 60 * 1000
+        );
+        initialSessions.push({
+          id: i + 1,
+          timestamp: sessionTime,
+          weight: 0,
+          reps: 0,
+          totalWeight: 0,
+          completed: false,
+        });
+      }
     }
 
     // Find next session
@@ -53,9 +75,20 @@ export default function WorkoutTracker() {
     }, 0);
   }, []);
 
+  const saveSessionsToStorage = (sessionsToSave: WorkoutSession[]) => {
+    try {
+      localStorage.setItem(
+        "squat-challenge-sessions",
+        JSON.stringify(sessionsToSave)
+      );
+    } catch (error) {
+      console.error("Error saving sessions to localStorage:", error);
+    }
+  };
+
   const updateSession = (sessionId: number, weight: number, reps: number) => {
-    setSessions((prevSessions) =>
-      prevSessions.map((session) =>
+    setSessions((prevSessions) => {
+      const updatedSessions = prevSessions.map((session) =>
         session.id === sessionId
           ? {
               ...session,
@@ -65,8 +98,14 @@ export default function WorkoutTracker() {
               completed: true,
             }
           : session
-      )
-    );
+      );
+
+      // Save to localStorage
+      saveSessionsToStorage(updatedSessions);
+
+      return updatedSessions;
+    });
+
     setEditingSession(null);
     setTempWeight(0);
     setTempReps(0);
@@ -107,11 +146,31 @@ export default function WorkoutTracker() {
     return sessions.filter((session) => session.completed).length;
   };
 
+  const resetAllData = () => {
+    if (
+      confirm(
+        "Are you sure you want to reset all workout data? This cannot be undone."
+      )
+    ) {
+      localStorage.removeItem("squat-challenge-sessions");
+      window.location.reload(); // Reload to reset to default sessions
+    }
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-        Workout Session Tracker
-      </h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">
+          Workout Session Tracker
+        </h2>
+        <button
+          onClick={resetAllData}
+          className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors text-sm"
+          title="Reset all workout data"
+        >
+          Reset Data
+        </button>
+      </div>
 
       {/* Progress Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
